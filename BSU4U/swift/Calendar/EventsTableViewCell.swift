@@ -15,4 +15,8 @@ class EventsTableViewCell: UITableViewCell {
     @IBOutlet weak var eventName: UILabel!
     @IBOutlet weak var eventDescription: UITextView!
     @IBOutlet weak var eventTopic: UILabel!
+    
+    override func prepareForReuse() {
+        eventDescription.superview?.backgroundColor = UIColor.clear
+    }
 }

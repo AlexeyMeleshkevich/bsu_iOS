@@ -2,7 +2,7 @@ import UIKit
 
 extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
     
-    // MARK: lessonsView(UITableView) protocols methods
+    // MARK: Lessons/Events --- UITableView protocols methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -10,25 +10,25 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
         case eventsView:
             return 3
         case scheduleView:
-             
-                   if lessons.count == 0 {
-                       self.scheduleView.separatorStyle = .none
-                       scheduleView.addSubview(self.noLessonsLabel)
-                       self.noLessonsLabel.isHidden = false
-                       self.scheduleView.isScrollEnabled = false
-
-                       setLabelLayout()
-                       return 0
-                   } else {
-                       self.scheduleView.isScrollEnabled = true
-                       self.scheduleView.separatorStyle = .singleLine
-                       self.noLessonsLabel.isHidden = true
-                       return lessons.count
-                   }
+            if lessons.count == 0 {
+                self.scheduleView.separatorStyle = .none
+                scheduleView.addSubview(self.noLessonsLabel)
+                self.noLessonsLabel.isHidden = false
+                self.scheduleView.isScrollEnabled = false
+                
+                setLabelLayout()
+                return 0
+            } else {
+                self.scheduleView.isScrollEnabled = true
+                self.scheduleView.separatorStyle = .singleLine
+                self.noLessonsLabel.isHidden = true
+                return lessons.count
+            }
         default:
             return 0
         }
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case eventsView:
@@ -40,38 +40,39 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         switch tableView {
-                case eventsView:
-                    let cell = tableView.dequeueReusableCell(withIdentifier: Constants.eventsCellID, for: indexPath) as! EventsTableViewCell
-                    
-                    let topics = ["Пьем пиво","Выпиваем Пиво","Допиваем пиво"]
-                    let date = ["12:00","15:00","22:00"]
-                    
-                    cell.eventName.text = "\(topics[indexPath.row])"
-                    cell.eventDate.text = "\(date[indexPath.row])"
-                    cell.eventDescription.isEditable = false
-                    cell.eventDescription.isUserInteractionEnabled = false
-        //            cell.layer.cornerRadius = 20
-        //            cell.layer.shadowOffset = CGSize(width: 0, height: 5)
-        //            cell.layer.shadowOpacity = 0.3
-        //            cell.layer.shadowRadius = 2
-                    
-                    return cell
-                case scheduleView:
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "C2", for: indexPath) as! ScheduleTableViewCell
-
-                    cell.lessonTime.text = lessons[indexPath.row].getProperty(index: 0)
-                    cell.lessonType.text = lessons[indexPath.row].getProperty(index: 1)
-                    cell.lessonName.text = lessons[indexPath.row].getProperty(index: 2)
-                    cell.lessonLocation.text = lessons[indexPath.row].getProperty(index: 3)
-                    cell.teacherName.text = lessons[indexPath.row].getProperty(index: 4)
-                    print(lessons[indexPath.row])
-                    return cell
-                default:
-                    return UITableViewCell()
-                }
+        case eventsView:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.eventsCellID, for: indexPath) as? EventsTableViewCell else { return UITableViewCell() }
+            
+            let topics = ["Пьем пиво","Выпиваем Пиво","Допиваем пиво"]
+            let date = ["12:00","15:00","22:00"]
+            
+            cell.eventName.text = "\(topics[indexPath.row])"
+            cell.eventDate.text = "\(date[indexPath.row])"
+            cell.eventDescription.isEditable = false
+            cell.eventDescription.isUserInteractionEnabled = false
+            
+            return cell
+        case scheduleView:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "C2", for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
+            
+            cell.lessonTime.text = lessons[indexPath.row].getProperty(index: 0)
+            cell.lessonType.text = lessons[indexPath.row].getProperty(index: 1)
+            cell.lessonName.text = lessons[indexPath.row].getProperty(index: 2)
+            cell.lessonLocation.text = lessons[indexPath.row].getProperty(index: 3)
+            cell.teacherName.text = lessons[indexPath.row].getProperty(index: 4)
+            
+            print(lessons[indexPath.row])
+            return cell
+        default:
+            return UITableViewCell()
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -93,45 +94,42 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func setLabelLayout() {
-           self.noLessonsLabel.centerYAnchor.constraint(equalTo: self.scheduleView.centerYAnchor, constant: 0).isActive = true
-           self.noLessonsLabel.centerXAnchor.constraint(equalTo: self.scheduleView.centerXAnchor).isActive = true
-       }
+        self.noLessonsLabel.topAnchor.constraint(equalTo: self.scheduleView.topAnchor, constant: 100).isActive = true
+        self.noLessonsLabel.centerXAnchor.constraint(equalTo: self.scheduleView.centerXAnchor).isActive = true
+    }
 }
 
 extension CalendarViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
-    // MARK: Calendar(UICollectionView) protocols methods
+    // MARK: Calendar --- UICollectionView protocols methods
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
+        
         return DaysInMonth[month] + numberOfEmptyBoxes
-//
     }
-    
-    
-    //MARK: Changed Method
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         day = indexPath.row + 1 - numberOfEmptyBoxes
         collectionView.reloadData()
-        print(day)
+        self.headerDate = String(day)
         guard calendarForMonth.count > day - 1 else { return }
         lessons = calendarForMonth[day - 1].data
         checkLessons(lessons: lessons)
         scheduleView.reloadData()
+        eventsView.reloadData()
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IDForCalendar, for: indexPath) as! DateCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.CalendarCellID, for: indexPath) as! DateCollectionViewCell
         cell.backgroundColor = UIColor.clear
         cell.cellDateLabel.textColor = UIColor.black
         
         if cell.isHidden {
             cell.isHidden = false
         }
-          cell.cellDateLabel.text = "\(indexPath.row + 1 - numberOfEmptyBoxes)"
+        cell.cellDateLabel.text = "\(indexPath.row + 1 - numberOfEmptyBoxes)"
         
         if Int(cell.cellDateLabel.text!)! < 1 {
             cell.isHidden = true

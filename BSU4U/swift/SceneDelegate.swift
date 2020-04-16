@@ -35,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let vc = storyboard.instantiateViewController(withIdentifier: "tabBarController")
         window?.rootViewController = vc
        
-        window?.backgroundColor = UIColor.white
+        window?.backgroundColor = UIColor.clear
         window?.makeKeyAndVisible()
     }
     

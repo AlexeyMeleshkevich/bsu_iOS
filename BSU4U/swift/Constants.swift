@@ -40,4 +40,6 @@ struct Constants {
     
     static let eventsCellID = "С.events"
     
+    static let CalendarCellID = "C1"
+    
 }
