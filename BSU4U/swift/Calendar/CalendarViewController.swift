@@ -196,6 +196,7 @@ class CalendarViewController: UIViewController {
         UIView.transition(with: eventsView, duration: 1.0, options: transOptions, animations: {
             self.eventsView.isHidden = false
         }, completion: nil)
+        
     }
     
     func flipBolt() {
@@ -205,7 +206,7 @@ class CalendarViewController: UIViewController {
             self.scheduleView.isHidden = false
         }, completion: nil)
         
-        UIView.transition(with: eventsView, duration: 1.0, options: transOptions, animations: {
+        UIView.animate(withDuration: 10, delay: 0, options: [.curveEaseInOut], animations: {
             self.eventsView.isHidden = true
         }, completion: nil)
     }

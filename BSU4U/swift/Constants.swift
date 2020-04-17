@@ -42,4 +42,8 @@ struct Constants {
     
     static let CalendarCellID = "C1"
     
+    static let scheduleControllerID = "ScheduleTableViewController"
+    
+    static let eventsControllerID = "EventsTableViewController"
+    
 }

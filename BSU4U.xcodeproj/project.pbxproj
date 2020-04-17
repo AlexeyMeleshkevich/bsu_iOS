@@ -11,6 +11,8 @@
 		78AB29D223FC909B00AB58C8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AB29D123FC909B00AB58C8 /* Login.swift */; };
 		78AB29D423FC90A600AB58C8 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AB29D323FC90A600AB58C8 /* Token.swift */; };
 		78AB29D623FC916E00AB58C8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AB29D523FC916E00AB58C8 /* Profile.swift */; };
+		A61C7C31244A397A00E79DFA /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61C7C30244A397A00E79DFA /* EventsViewController.swift */; };
+		A61C7C33244A3A8600E79DFA /* InformationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61C7C32244A3A8600E79DFA /* InformationPresenter.swift */; };
 		A675BA0C2448C1F5003EC7D3 /* InformationBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675BA0B2448C1F5003EC7D3 /* InformationBarItem.swift */; };
 		A6E40905244635EA00B98F69 /* EventsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E40904244635EA00B98F69 /* EventsTableViewCell.swift */; };
 		D81DBBF923A26C540027D580 /* ExamProgressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DBBF823A26C540027D580 /* ExamProgressCell.swift */; };
@@ -52,6 +54,8 @@
 		78AB29D123FC909B00AB58C8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		78AB29D323FC90A600AB58C8 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		78AB29D523FC916E00AB58C8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		A61C7C30244A397A00E79DFA /* EventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
+		A61C7C32244A3A8600E79DFA /* InformationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationPresenter.swift; sourceTree = "<group>"; };
 		A675BA0B2448C1F5003EC7D3 /* InformationBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationBarItem.swift; sourceTree = "<group>"; };
 		A6E40904244635EA00B98F69 /* EventsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsTableViewCell.swift; sourceTree = "<group>"; };
 		D81DBBF823A26C540027D580 /* ExamProgressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamProgressCell.swift; sourceTree = "<group>"; };
@@ -198,6 +202,8 @@
 				D876206E239978CF0026352A /* CalendarViewController.swift */,
 				D842CDF423AE40F3008E6744 /* ExtensionCalendarViewController.swift */,
 				A675BA0B2448C1F5003EC7D3 /* InformationBarItem.swift */,
+				A61C7C30244A397A00E79DFA /* EventsViewController.swift */,
+				A61C7C32244A3A8600E79DFA /* InformationPresenter.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -331,6 +337,7 @@
 				D8762077239978CF0026352A /* SettingsTableViewCell.swift in Sources */,
 				D8C8B64F23A18BEF008E6825 /* HistoryViewController.swift in Sources */,
 				D856CBD92396A8EA0055FD1B /* SceneDelegate.swift in Sources */,
+				A61C7C31244A397A00E79DFA /* EventsViewController.swift in Sources */,
 				78AB29D223FC909B00AB58C8 /* Login.swift in Sources */,
 				A675BA0C2448C1F5003EC7D3 /* InformationBarItem.swift in Sources */,
 				D842CDF523AE40F3008E6744 /* ExtensionCalendarViewController.swift in Sources */,
@@ -340,6 +347,7 @@
 				D876207C239978CF0026352A /* DateCollectionViewCell.swift in Sources */,
 				D8DAA92723A36D0700FE7161 /* TestProgressCell.swift in Sources */,
 				D834109323C3BEAD00F2F8B9 /* CalendarForDay.swift in Sources */,
+				A61C7C33244A3A8600E79DFA /* InformationPresenter.swift in Sources */,
 				D8762079239978CF0026352A /* CalendarDataModel.swift in Sources */,
 				78AB29D423FC90A600AB58C8 /* Token.swift in Sources */,
 				D8411EE92399839E00FF7F3D /* UserInfoCell.swift in Sources */,

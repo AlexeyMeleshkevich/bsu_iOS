@@ -32,7 +32,7 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case eventsView:
-            return 100
+            return 120
         case scheduleView:
             return 150
         default:
@@ -86,11 +86,17 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let stroryboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = stroryboard.instantiateViewController(withIdentifier: "ScheduleTableViewController") as! ScheduleTableViewController
-        vc.lessons = lessons
-        self.present(vc, animated: true, completion: nil)
+        
+        var presenter: InformationPresenter
+        
+        switch tableView {
+        case eventsView:
+            presenter = InformationPresenter(in: self, id: Constants.eventsControllerID, data: nil)
+        case scheduleView:
+            presenter = InformationPresenter(in: self, id: Constants.scheduleControllerID, data: lessons)
+        default:
+            return
+        }
     }
     
     func setLabelLayout() {
@@ -163,3 +169,14 @@ extension CalendarViewController: UICollectionViewDelegate, UICollectionViewData
         }
     }
 }
+
+
+//tableView.deselectRow(at: indexPath, animated: true)
+//            let stroryboard = UIStoryboard(name: "Main", bundle: nil)
+//            let vc = stroryboard.instantiateViewController(withIdentifier: Constants.scheduleControllerID) as! ScheduleTableViewController
+//            vc.lessons = lessons
+////            self.present(vc, animated: true, completion: nil)
+//tableView.deselectRow(at: indexPath, animated: true)
+//let stroryboard = UIStoryboard(name: "Main", bundle: nil)
+//let vc = stroryboard.instantiateViewController(withIdentifier: Constants.eventsControllerID) as! EventsViewController
+//self.present(vc, animated: true, completion: nil)
