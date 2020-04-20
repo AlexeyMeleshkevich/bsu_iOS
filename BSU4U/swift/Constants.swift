@@ -46,4 +46,6 @@ struct Constants {
     
     static let eventsControllerID = "EventsTableViewController"
     
+    static let photosCellID = "C.photo"
+    
 }

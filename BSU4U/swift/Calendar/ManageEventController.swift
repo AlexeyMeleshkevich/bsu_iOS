@@ -20,8 +20,42 @@ class ManageEventController: UIViewController {
     @IBOutlet weak var eventDescription: UITextView!
     @IBOutlet weak var photosCollection: UICollectionView!
     
-    lazy var photos = [UIImage]()
-
+    public enum ControllerState {
+        case edit
+        case add
+    }
+    
+    lazy var state: ControllerState = .add
+    lazy var photos = [UIImage?]()
+    
+    var data: EventModel! {
+        didSet(newValue) {
+            self.bindData(data: newValue)
+        }
+    }
+    
+    init(state: ControllerState, data: EventModel?) {
+        super.init(nibName: nil, bundle: nil)
+        
+        switch state {
+        case .add:
+            break
+        case .edit:
+            guard let data = data else {
+                let wrongAlert = UIAlertController(title: "Ошибка", message: "Данные не получены", preferredStyle: .alert)
+                wrongAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self] (action) in
+                    self?.navigationController?.popViewController(animated: true)
+                }))
+                self.present(wrongAlert, animated: true, completion: nil)
+                break }
+            self.data = data
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +65,7 @@ class ManageEventController: UIViewController {
     func setUI() {
         setTakePhotoEvent()
         setEventDescription()
+        setAddEventButton()
         
         photosCollection.delegate = self
         photosCollection.dataSource = self
@@ -44,6 +79,23 @@ class ManageEventController: UIViewController {
         eventDescription.delegate = self
         eventDescription.layer.borderColor = UIColor.lightGray.cgColor
         eventDescription.layer.cornerRadius = 5
+    }
+    
+    func setAddEventButton() {
+        addEventButton.layer.cornerRadius = 10
+    }
+    
+    func bindData(data: EventModel) {
+        bindImages(imagesArray: [data.eventImages!])
+        self.addEventButton.titleLabel?.text = "Сохранить"
+        self.newEventLabel.text = "Редактировать"
+        self.topicField.text = data.eventName
+        self.eventDescription.text = data.eventDescription
+    }
+    
+    func bindImages(imagesArray: [UIImage]) {
+        guard let images = data.eventImages else { return }
+        self.photos = [images]
     }
     
     @IBAction func addPhoto(_ sender: Any) {

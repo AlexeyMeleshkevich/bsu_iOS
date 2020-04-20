@@ -7,3 +7,10 @@
 //
 
 import Foundation
+import UIKit
+
+struct EventModel {
+    let eventName: String
+    let eventDescription: String
+    let eventImages: UIImage?
+}
