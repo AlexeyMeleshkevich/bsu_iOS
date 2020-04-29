@@ -30,10 +30,6 @@ class InformationBarItem: UIBarButtonItem {
         }
     }
     
-//    override init() {
-//        super.init()
-//    }
-    
     override init() {
         super.init()
         

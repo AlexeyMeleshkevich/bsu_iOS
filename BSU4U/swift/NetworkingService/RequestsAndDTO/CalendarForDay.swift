@@ -11,7 +11,7 @@ import UIKit
 
 struct CalendarForDay: Decodable {
     var day: Int
-    var data: [Lesson]
+    var data: [LessonsModel]
 }
 
 

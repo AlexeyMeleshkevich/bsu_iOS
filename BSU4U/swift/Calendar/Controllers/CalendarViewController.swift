@@ -16,15 +16,18 @@ class CalendarViewController: UIViewController {
         }
     }
     
-    var lessons = [Lesson]()
-    {
+    var lessons = [LessonsModel]() {
         didSet {
-            DispatchQueue.main.async {
-                self.scheduleView.reloadData()
-                self.scheduleView.isHidden = self.lessons.count == 0 ? true : false
+            DispatchQueue.main.async { [weak self] in
+                self?.scheduleView.reloadData()
+                self?.scheduleView.isHidden = self?.lessons.count == 0 ? true : false
             }
         }
     }
+    
+    var events: [EventModel] = [EventModel(eventName: "Пьем пиво", eventTime: "12:00", eventDescription: "Собираемся под общагой для культурного времяпровождения", eventFullDescription: "У меня всего лишь свой стиль игры. Есть много разных способов «охоты». Я смотрю канал «Дискавери», и там показывают представителей дикой фауны. У каждого хищника свой способ охоты. Львы отличаются от гиен. Одни делают это стаей, другие используют обдуманную стратегию.", eventImages: [Constants.image!, Constants.image!, Constants.image!, Constants.image!]),
+                                EventModel(eventName: "Выпиваем пиво", eventTime: "15:00", eventDescription: "Становится веселее", eventFullDescription: "С момента, когда я начал играть в баскетбол, лишь последние два года использую игру спиной к кольцу. Так что мне по-прежнему нужно много тренироваться, чтобы стать профи в этом деле.", eventImages: nil),
+                                EventModel(eventName: "Допиваем пиво", eventTime: "22:00", eventDescription: "Ууууу пажылая гадзилла", eventFullDescription: "Я бы обыграл Джеймса один на один. Я учился этому с детства. ЛеБрон больше как Мэджик Джонсон — хороший распасовщик и играет в разносторонний баскетбол. Я же привык обыгрывать за счет индивидуального мастерства. Могу делать это даже во сне.", eventImages: [ Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!])]
     
     let noLessonsLabel: UILabel = {
         let label = UILabel()
@@ -93,9 +96,7 @@ class CalendarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItem = informationTypeItem
-        self.informationTypeItem.target = self
-        self.informationTypeItem.action = #selector(informationItemPressed)
+        setNavigationBar()
         getNumberOfEmptyCellsInCollectionView(calendar: superCalendar, month: month, year: year)
         getLessons()
         scheduleView.reloadData()
@@ -111,8 +112,17 @@ class CalendarViewController: UIViewController {
     
     //MARK: UI methods
     
+    func setNavigationBar() {
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        let backButton = UIBarButtonItem(title: nil, style: .plain, target: navigationController, action: nil)
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
+        self.navigationItem.rightBarButtonItem = informationTypeItem
+        self.informationTypeItem.target = self
+        self.informationTypeItem.action = #selector(informationItemPressed)
+    }
+    
     func setTableView() {
-        eventsView.separatorStyle = .none
+        eventsView.separatorStyle = .singleLine
         eventsView.backgroundColor = UIColor.white
         setHeaderLabel()
     }
@@ -125,7 +135,7 @@ class CalendarViewController: UIViewController {
         headerLabel.textColor = .lightGray
         headerLabel.text = "\(day), \(headerMonths[month])"
         header.addSubview(headerLabel)
-        
+        headerLabel.centerXAnchor.constraint(equalTo: header.centerXAnchor).isActive = true
         scheduleView.tableHeaderView = header
         eventsView.tableHeaderView = header
     }

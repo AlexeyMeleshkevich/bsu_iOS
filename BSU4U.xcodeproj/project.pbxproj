@@ -3,15 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		78AB29D023FC908D00AB58C8 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AB29CF23FC908D00AB58C8 /* Lesson.swift */; };
+		78AB29D023FC908D00AB58C8 /* LessonsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AB29CF23FC908D00AB58C8 /* LessonsModel.swift */; };
 		78AB29D223FC909B00AB58C8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AB29D123FC909B00AB58C8 /* Login.swift */; };
 		78AB29D423FC90A600AB58C8 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AB29D323FC90A600AB58C8 /* Token.swift */; };
 		78AB29D623FC916E00AB58C8 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AB29D523FC916E00AB58C8 /* Profile.swift */; };
+		8E387838401E489D0DDD7BA7 /* Pods_BSU4U.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A91C799077FF8E67D1E4B21 /* Pods_BSU4U.framework */; };
 		A60EEF71244E2862008E8F64 /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60EEF70244E2862008E8F64 /* EventModel.swift */; };
+		A60F53B62458CEBD00170E51 /* EventsTableViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60F53B52458CEBD00170E51 /* EventsTableViewControllerCell.swift */; };
 		A61C7C31244A397A00E79DFA /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61C7C30244A397A00E79DFA /* EventsViewController.swift */; };
 		A61C7C33244A3A8600E79DFA /* InformationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A61C7C32244A3A8600E79DFA /* InformationPresenter.swift */; };
 		A675BA0C2448C1F5003EC7D3 /* InformationBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675BA0B2448C1F5003EC7D3 /* InformationBarItem.swift */; };
@@ -53,11 +55,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		78AB29CF23FC908D00AB58C8 /* Lesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
+		465E4F47D6B1B2D8F872B779 /* Pods-BSU4U.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BSU4U.release.xcconfig"; path = "Target Support Files/Pods-BSU4U/Pods-BSU4U.release.xcconfig"; sourceTree = "<group>"; };
+		6A91C799077FF8E67D1E4B21 /* Pods_BSU4U.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BSU4U.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		78AB29CF23FC908D00AB58C8 /* LessonsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonsModel.swift; sourceTree = "<group>"; };
 		78AB29D123FC909B00AB58C8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		78AB29D323FC90A600AB58C8 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		78AB29D523FC916E00AB58C8 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		A41FF547E4C99F49204A8B37 /* Pods-BSU4U.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BSU4U.debug.xcconfig"; path = "Target Support Files/Pods-BSU4U/Pods-BSU4U.debug.xcconfig"; sourceTree = "<group>"; };
 		A60EEF70244E2862008E8F64 /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
+		A60F53B52458CEBD00170E51 /* EventsTableViewControllerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsTableViewControllerCell.swift; sourceTree = "<group>"; };
 		A61C7C30244A397A00E79DFA /* EventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		A61C7C32244A3A8600E79DFA /* InformationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationPresenter.swift; sourceTree = "<group>"; };
 		A675BA0B2448C1F5003EC7D3 /* InformationBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationBarItem.swift; sourceTree = "<group>"; };
@@ -105,23 +111,85 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E387838401E489D0DDD7BA7 /* Pods_BSU4U.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A34B5C2559EAEEADCEAAF78 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6A91C799077FF8E67D1E4B21 /* Pods_BSU4U.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		68345F0CD836D1413BA27A19 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A41FF547E4C99F49204A8B37 /* Pods-BSU4U.debug.xcconfig */,
+				465E4F47D6B1B2D8F872B779 /* Pods-BSU4U.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		78AB29CE23FC8FF000AB58C8 /* RequestsAndDTO */ = {
 			isa = PBXGroup;
 			children = (
 				D834109223C3BEAD00F2F8B9 /* CalendarForDay.swift */,
 				78AB29D523FC916E00AB58C8 /* Profile.swift */,
-				78AB29CF23FC908D00AB58C8 /* Lesson.swift */,
+				78AB29CF23FC908D00AB58C8 /* LessonsModel.swift */,
 				78AB29D123FC909B00AB58C8 /* Login.swift */,
 				78AB29D323FC90A600AB58C8 /* Token.swift */,
 				D834109023C3BE8600F2F8B9 /* ApiRequ.swift */,
 			);
 			path = RequestsAndDTO;
+			sourceTree = "<group>";
+		};
+		A6CC440D2458546000306C40 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A61C7C32244A3A8600E79DFA /* InformationPresenter.swift */,
+				D8422BF223C2270D00BD11D0 /* ScheduleTableViewController.swift */,
+				D876206E239978CF0026352A /* CalendarViewController.swift */,
+				D842CDF423AE40F3008E6744 /* ExtensionCalendarViewController.swift */,
+				A61C7C30244A397A00E79DFA /* EventsViewController.swift */,
+				A6B26D70244E00D500AA3A34 /* ManageEventController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A6CC440E2458548800306C40 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D842CDF823AE41BD008E6744 /* ScheduleTableViewControllerCell.swift */,
+				A6E40904244635EA00B98F69 /* EventsTableViewCell.swift */,
+				D8762074239978CF0026352A /* DateCollectionViewCell.swift */,
+				D842CDF923AE41BD008E6744 /* ScheduleTableViewCell.swift */,
+				A6B26D72244E178200AA3A34 /* PhotosCollectionCell.swift */,
+				A60F53B52458CEBD00170E51 /* EventsTableViewControllerCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A6CC440F245854AA00306C40 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A60EEF70244E2862008E8F64 /* EventModel.swift */,
+				D8762071239978CF0026352A /* CalendarDataModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A6CC4410245854D400306C40 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A6CC440E2458548800306C40 /* Cells */,
+				A675BA0B2448C1F5003EC7D3 /* InformationBarItem.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		A6E408FE2446330200B98F69 /* swift */ = {
@@ -164,6 +232,8 @@
 			children = (
 				D856CBD52396A8EA0055FD1B /* BSU4U */,
 				D856CBD42396A8EA0055FD1B /* Products */,
+				68345F0CD836D1413BA27A19 /* Pods */,
+				4A34B5C2559EAEEADCEAAF78 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -199,20 +269,9 @@
 		D85A531E239FD98F00FFE3DB /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				A6E40904244635EA00B98F69 /* EventsTableViewCell.swift */,
-				D8422BF223C2270D00BD11D0 /* ScheduleTableViewController.swift */,
-				D8762071239978CF0026352A /* CalendarDataModel.swift */,
-				D8762074239978CF0026352A /* DateCollectionViewCell.swift */,
-				D842CDF923AE41BD008E6744 /* ScheduleTableViewCell.swift */,
-				D842CDF823AE41BD008E6744 /* ScheduleTableViewControllerCell.swift */,
-				D876206E239978CF0026352A /* CalendarViewController.swift */,
-				D842CDF423AE40F3008E6744 /* ExtensionCalendarViewController.swift */,
-				A675BA0B2448C1F5003EC7D3 /* InformationBarItem.swift */,
-				A61C7C30244A397A00E79DFA /* EventsViewController.swift */,
-				A61C7C32244A3A8600E79DFA /* InformationPresenter.swift */,
-				A6B26D70244E00D500AA3A34 /* ManageEventController.swift */,
-				A6B26D72244E178200AA3A34 /* PhotosCollectionCell.swift */,
-				A60EEF70244E2862008E8F64 /* EventModel.swift */,
+				A6CC4410245854D400306C40 /* Views */,
+				A6CC440F245854AA00306C40 /* Models */,
+				A6CC440D2458546000306C40 /* Controllers */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -265,9 +324,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D856CBE72396A8EC0055FD1B /* Build configuration list for PBXNativeTarget "BSU4U" */;
 			buildPhases = (
+				67E2D467DBF7D1FE0AA4787A /* [CP] Check Pods Manifest.lock */,
 				D856CBCF2396A8EA0055FD1B /* Sources */,
 				D856CBD02396A8EA0055FD1B /* Frameworks */,
 				D856CBD12396A8EA0055FD1B /* Resources */,
+				F5DB7BBD69006C96FA073D57 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -324,6 +385,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		67E2D467DBF7D1FE0AA4787A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BSU4U-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F5DB7BBD69006C96FA073D57 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BSU4U/Pods-BSU4U-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BSU4U/Pods-BSU4U-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BSU4U/Pods-BSU4U-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D856CBCF2396A8EA0055FD1B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -360,8 +463,9 @@
 				A61C7C33244A3A8600E79DFA /* InformationPresenter.swift in Sources */,
 				D8762079239978CF0026352A /* CalendarDataModel.swift in Sources */,
 				78AB29D423FC90A600AB58C8 /* Token.swift in Sources */,
+				A60F53B62458CEBD00170E51 /* EventsTableViewControllerCell.swift in Sources */,
 				D8411EE92399839E00FF7F3D /* UserInfoCell.swift in Sources */,
-				78AB29D023FC908D00AB58C8 /* Lesson.swift in Sources */,
+				78AB29D023FC908D00AB58C8 /* LessonsModel.swift in Sources */,
 				D876207F239979480026352A /* Constants.swift in Sources */,
 				D8F0CE6323A798E700B970C6 /* Layout.swift in Sources */,
 				D8C8B65123A19FD3008E6825 /* HeaderHistoryView.swift in Sources */,
@@ -504,10 +608,11 @@
 		};
 		D856CBE82396A8EC0055FD1B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A41FF547E4C99F49204A8B37 /* Pods-BSU4U.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GA45JW926G;
+				DEVELOPMENT_TEAM = WD3HSGX563;
 				INFOPLIST_FILE = BSU4U/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -523,10 +628,11 @@
 		};
 		D856CBE92396A8EC0055FD1B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 465E4F47D6B1B2D8F872B779 /* Pods-BSU4U.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GA45JW926G;
+				DEVELOPMENT_TEAM = WD3HSGX563;
 				INFOPLIST_FILE = BSU4U/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (

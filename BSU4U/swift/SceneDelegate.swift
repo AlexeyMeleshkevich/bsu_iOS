@@ -10,6 +10,8 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
+    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var window: UIWindow?
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     
@@ -37,6 +39,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
        
         window?.backgroundColor = UIColor.clear
         window?.makeKeyAndVisible()
+        
+        appDelegate.window = self.window
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

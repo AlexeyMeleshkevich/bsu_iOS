@@ -15,10 +15,10 @@ class StartViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     var token = Token() {
         didSet {
-            DispatchQueue.main.async {
-                self.loginTextField.text = ""
-                self.passwordTextField.text = ""
-                self.loadProfileView()
+            DispatchQueue.main.async { [weak self] in
+                self?.loginTextField.text = ""
+                self?.passwordTextField.text = ""
+                self?.loadProfileView()
             }
         }
     }
@@ -45,8 +45,10 @@ class StartViewController: UIViewController {
         let api = ApiRequest(endpoint: "api/token/generate-token")
         api.login(login) { (result) in
             switch result {
-            case.failure(let error) : print(error)
-            case.success(let token) : self.token = token
+            case.failure(let error):
+                print(error)
+            case.success(let token):
+                self.token = token
             }
         }
     }

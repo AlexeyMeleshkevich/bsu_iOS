@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 struct Constants {
-   
+    
     
     static let SEGMENT_SET_ITEMS = [UIImage(named: "education"),
                                     UIImage(named: "money"),
@@ -26,7 +26,7 @@ struct Constants {
                                       "Форма обучения", "Почта",
                                       "Адресс проживания"]
     static let CREDIT_NAME_CELL = ["Оплата за обучение", "Пересдачи", "За общежитие", "История платежей"]
-   
+    
     
     
     static let customBlue = UIColor(red: 20.0 / 255.0, green: 78.0 / 255.0, blue: 157.0 / 255.0, alpha: 1.0)
@@ -38,14 +38,28 @@ struct Constants {
                                  "15:20 - 16:40",
                                  "прокоповичтайм",]
     
+    /**
+     CalendarViewController eventsTableView cell identifire for events
+     */
     static let eventsCellID = "С.events"
-    
+    /** CalendarViewController calendarCollectionView cell identifire for dates
+     */
     static let CalendarCellID = "C1"
+    /**
+     EventsViewController tableView cell identifire
+     */
+    static let photosCellID = "С.eventsPhotos"
+    /**
+     EventsViewController collectionView cell identifire
+     */
+    static let eventsPhotosCellID = "C.tableViewPhotos"
     
+    /**
+     Controllers ID's to instatiate controllers from storyboard
+     */
     static let scheduleControllerID = "ScheduleTableViewController"
-    
     static let eventsControllerID = "EventsTableViewController"
     
-    static let photosCellID = "C.photo"
+    static let image = UIImage(named: "blueface")
     
 }

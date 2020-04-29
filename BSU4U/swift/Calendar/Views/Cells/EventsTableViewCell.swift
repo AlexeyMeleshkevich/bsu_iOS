@@ -11,12 +11,11 @@ import UIKit
 
 class EventsTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var eventDate: UILabel!
+    @IBOutlet weak var eventTime: UILabel!
     @IBOutlet weak var eventName: UILabel!
     @IBOutlet weak var eventDescription: UITextView!
-    @IBOutlet weak var photosCollection: UICollectionView!
     
     override func prepareForReuse() {
         eventDescription.superview?.backgroundColor = UIColor.clear
-    }
+        }
 }

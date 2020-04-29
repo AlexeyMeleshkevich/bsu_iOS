@@ -11,6 +11,8 @@ import UIKit
 
 struct EventModel {
     let eventName: String
+    let eventTime: String
     let eventDescription: String
-    let eventImages: UIImage?
+    let eventFullDescription: String
+    let eventImages: [UIImage]?
 }

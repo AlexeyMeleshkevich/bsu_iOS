@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct Lesson: Decodable {
+struct LessonsModel: Decodable {
     var time_start: String?
     var time_end: String?
     var audience: String?

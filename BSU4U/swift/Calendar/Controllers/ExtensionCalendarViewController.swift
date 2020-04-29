@@ -32,7 +32,7 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case eventsView:
-            return 120
+            return 100
         case scheduleView:
             return 150
         default:
@@ -50,11 +50,7 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
         case eventsView:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.eventsCellID, for: indexPath) as? EventsTableViewCell else { return UITableViewCell() }
             
-            let topics = ["Пьем пиво","Выпиваем Пиво","Допиваем пиво"]
-            let date = ["12:00","15:00","22:00"]
-            
-            cell.eventName.text = "\(topics[indexPath.row])"
-            cell.eventDate.text = "\(date[indexPath.row])"
+            bindData(cell: cell, for: indexPath)
             cell.eventDescription.isEditable = false
             cell.eventDescription.isUserInteractionEnabled = false
             
@@ -62,17 +58,16 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
         case scheduleView:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "C2", for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
             
-            cell.lessonTime.text = lessons[indexPath.row].getProperty(index: 0)
-            cell.lessonType.text = lessons[indexPath.row].getProperty(index: 1)
-            cell.lessonName.text = lessons[indexPath.row].getProperty(index: 2)
-            cell.lessonLocation.text = lessons[indexPath.row].getProperty(index: 3)
-            cell.teacherName.text = lessons[indexPath.row].getProperty(index: 4)
-            
+            bindData(cell: cell, for: indexPath)
             print(lessons[indexPath.row])
             return cell
         default:
             return UITableViewCell()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return false
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -91,9 +86,11 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
         
         switch tableView {
         case eventsView:
-            presenter = InformationPresenter(in: self, id: Constants.eventsControllerID, data: nil)
+            tableView.deselectRow(at: indexPath, animated: true)
+            presenter = InformationPresenter(in: self, id: Constants.eventsControllerID, data: (events, "\(day), \(headerMonths[month])"))
         case scheduleView:
-            presenter = InformationPresenter(in: self, id: Constants.scheduleControllerID, data: lessons)
+            tableView.deselectRow(at: indexPath, animated: true)
+            presenter = InformationPresenter(in: self, id: Constants.scheduleControllerID, data: (lessons, "\(day), \(headerMonths[month])"))
         default:
             return
         }
@@ -158,7 +155,7 @@ extension CalendarViewController: UICollectionViewDelegate, UICollectionViewData
         return cell
     }
     
-    func checkLessons(lessons: [Lesson]) {
+    func checkLessons(lessons: [LessonsModel]) {
         var i = 0
         for lesson in lessons {
             if lesson.subject == nil {
@@ -168,15 +165,18 @@ extension CalendarViewController: UICollectionViewDelegate, UICollectionViewData
             }
         }
     }
+    
+    func bindData(cell: EventsTableViewCell, for indexPath: IndexPath) {
+        cell.eventName.text = events[indexPath.row].eventName
+        cell.eventTime.text = events[indexPath.row].eventTime
+        cell.eventDescription.text = events[indexPath.row].eventDescription
+    }
+    
+    func bindData(cell: ScheduleTableViewCell, for indexPath: IndexPath) {
+        cell.lessonTime.text = lessons[indexPath.row].getProperty(index: 0)
+        cell.lessonType.text = lessons[indexPath.row].getProperty(index: 1)
+        cell.lessonName.text = lessons[indexPath.row].getProperty(index: 2)
+        cell.lessonLocation.text = lessons[indexPath.row].getProperty(index: 3)
+        cell.teacherName.text = lessons[indexPath.row].getProperty(index: 4)
+    }
 }
-
-
-//tableView.deselectRow(at: indexPath, animated: true)
-//            let stroryboard = UIStoryboard(name: "Main", bundle: nil)
-//            let vc = stroryboard.instantiateViewController(withIdentifier: Constants.scheduleControllerID) as! ScheduleTableViewController
-//            vc.lessons = lessons
-////            self.present(vc, animated: true, completion: nil)
-//tableView.deselectRow(at: indexPath, animated: true)
-//let stroryboard = UIStoryboard(name: "Main", bundle: nil)
-//let vc = stroryboard.instantiateViewController(withIdentifier: Constants.eventsControllerID) as! EventsViewController
-//self.present(vc, animated: true, completion: nil)

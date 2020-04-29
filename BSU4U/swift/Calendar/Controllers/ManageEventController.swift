@@ -86,7 +86,7 @@ class ManageEventController: UIViewController {
     }
     
     func bindData(data: EventModel) {
-        bindImages(imagesArray: [data.eventImages!])
+        bindImages(imagesArray: data.eventImages!)
         self.addEventButton.titleLabel?.text = "Сохранить"
         self.newEventLabel.text = "Редактировать"
         self.topicField.text = data.eventName
@@ -95,7 +95,7 @@ class ManageEventController: UIViewController {
     
     func bindImages(imagesArray: [UIImage]) {
         guard let images = data.eventImages else { return }
-        self.photos = [images]
+        self.photos = images
     }
     
     @IBAction func addPhoto(_ sender: Any) {
