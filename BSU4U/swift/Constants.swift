@@ -53,7 +53,10 @@ struct Constants {
      EventsViewController collectionView cell identifire
      */
     static let eventsPhotosCellID = "C.tableViewPhotos"
-    
+    /**
+     ManageViewController collectionView cell identifire
+     */
+    static let managePhotosCellID = "C.managePhoto"
     /**
      Controllers ID's to instatiate controllers from storyboard
      */

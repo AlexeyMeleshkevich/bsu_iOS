@@ -20,13 +20,15 @@ class EventsTableViewControllerCell: UITableViewCell {
         eventDescription.superview?.backgroundColor = UIColor.clear
         eventDescription.backgroundColor = UIColor.clear
         photosCollection.backgroundColor = UIColor.clear
+        eventDescription.isScrollEnabled = false
+        eventDescription.sizeToFit()
+        eventDescription.isUserInteractionEnabled = false
         eventDescription.isEditable = false
         isUserInteractionEnabled = true
-        
     }
     
     func setBottomAnchor() {
-        bottomAnchor.constraint(equalTo: eventDescription.bottomAnchor, constant: 10).isActive = true
+        bottomAnchor.constraint(equalTo: eventDescription.bottomAnchor, constant: 5).isActive = true
     }
     
     func subscribeProtocols(_ protocols: UICollectionViewDataSource & UICollectionViewDelegate, forRow row: Int) {

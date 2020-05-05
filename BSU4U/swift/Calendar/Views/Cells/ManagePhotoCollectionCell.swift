@@ -1,17 +1,17 @@
 //
-//  PhotosCollectionCell.swift
+//  ManagePhotoCollectionCell.swift
 //  BSU4U
 //
-//  Created by Alexey Meleshkevich on 20.04.2020.
+//  Created by Alexey Meleshkevich on 05.05.2020.
 //  Copyright © 2020 Li. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-class PhotosCollectionCell: UICollectionViewCell {
+class ManagePhotoCollectionCell: UICollectionViewCell {
     
-    @IBOutlet weak var photo: UIImageView!
+    @IBOutlet weak var managePhoto: UIImageView!
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -20,4 +20,5 @@ class PhotosCollectionCell: UICollectionViewCell {
         layer.borderColor = UIColor.lightGray.cgColor
         layer.borderWidth = 1
     }
+    
 }

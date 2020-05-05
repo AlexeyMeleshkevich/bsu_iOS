@@ -82,15 +82,17 @@ extension CalendarViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let date = "\(day), \(headerMonths[month])"
+        
         var presenter: InformationPresenter
         
         switch tableView {
         case eventsView:
             tableView.deselectRow(at: indexPath, animated: true)
-            presenter = InformationPresenter(in: self, id: Constants.eventsControllerID, data: (events, "\(day), \(headerMonths[month])"))
+            presenter = InformationPresenter(in: self, id: Constants.eventsControllerID, data: (events, date, user))
         case scheduleView:
             tableView.deselectRow(at: indexPath, animated: true)
-            presenter = InformationPresenter(in: self, id: Constants.scheduleControllerID, data: (lessons, "\(day), \(headerMonths[month])"))
+            presenter = InformationPresenter(in: self, id: Constants.scheduleControllerID, data: (lessons, date, user))
         default:
             return
         }

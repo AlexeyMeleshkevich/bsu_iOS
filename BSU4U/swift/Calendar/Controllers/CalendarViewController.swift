@@ -10,6 +10,8 @@ class CalendarViewController: UIViewController {
     let leftAndRightPaddings: CGFloat = 74.0
     let numberOfItems: CGFloat = 7.0
     
+    var user: AccessType! = .admin
+    
     var headerDate: String! {
         didSet(date) {
             self.headerLabel.text = "\(day), \(headerMonths[month])"
@@ -25,9 +27,9 @@ class CalendarViewController: UIViewController {
         }
     }
     
-    var events: [EventModel] = [EventModel(eventName: "Пьем пиво", eventTime: "12:00", eventDescription: "Собираемся под общагой для культурного времяпровождения", eventFullDescription: "У меня всего лишь свой стиль игры. Есть много разных способов «охоты». Я смотрю канал «Дискавери», и там показывают представителей дикой фауны. У каждого хищника свой способ охоты. Львы отличаются от гиен. Одни делают это стаей, другие используют обдуманную стратегию.", eventImages: [Constants.image!, Constants.image!, Constants.image!, Constants.image!]),
+    var events: [EventModel] = [EventModel(eventName: "Пьем пиво", eventTime: "12:00", eventDescription: "Собираемся под общагой для культурного времяпровождения", eventFullDescription: "У меня всего лишь свой стиль игры. Есть много разных способов «охоты». Я смотрю канал «Дискавери», и там показывают представителей дикой фауны. У каждого хищника свой способ охоты. Львы отличаются от гиен. Одни делают это стаей, другие используют обдуманную стратегию ту утуттутуттууту пам параааааам пам параааам.", eventImages: [Constants.image!, Constants.image!, Constants.image!, Constants.image!]),
                                 EventModel(eventName: "Выпиваем пиво", eventTime: "15:00", eventDescription: "Становится веселее", eventFullDescription: "С момента, когда я начал играть в баскетбол, лишь последние два года использую игру спиной к кольцу. Так что мне по-прежнему нужно много тренироваться, чтобы стать профи в этом деле.", eventImages: nil),
-                                EventModel(eventName: "Допиваем пиво", eventTime: "22:00", eventDescription: "Ууууу пажылая гадзилла", eventFullDescription: "Я бы обыграл Джеймса один на один. Я учился этому с детства. ЛеБрон больше как Мэджик Джонсон — хороший распасовщик и играет в разносторонний баскетбол. Я же привык обыгрывать за счет индивидуального мастерства. Могу делать это даже во сне.", eventImages: [ Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!])]
+                                EventModel(eventName: "Допиваем пиво", eventTime: "22:00", eventDescription: "Ууууу пажылая гадзилла", eventFullDescription: "Я бы обыграл Джеймса один на один. Я учился этому с детства. ЛеБрон больше как Мэджик Джонсон — хороший распасовщик и играет в разносторонний баскетбол. Я же привык обыгрывать за счет индивидуального мастерства. Могу делать это даже во сне виталя цаль виталя цаль виталя цаль виталя цаль виталя цаль виталя цаль виталя цаль виталя цаль виталя цаль виталя цаль.", eventImages: [ Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!, Constants.image!])]
     
     let noLessonsLabel: UILabel = {
         let label = UILabel()
@@ -216,7 +218,7 @@ class CalendarViewController: UIViewController {
             self.scheduleView.isHidden = false
         }, completion: nil)
         
-        UIView.animate(withDuration: 10, delay: 0, options: [.curveEaseInOut], animations: {
+        UIView.animate(withDuration: 1, delay: 0, options: [.curveEaseInOut], animations: {
             self.eventsView.isHidden = true
         }, completion: nil)
     }
