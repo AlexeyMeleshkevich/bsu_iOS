@@ -94,6 +94,7 @@ class CalendarViewController: UIViewController {
     override func loadView() {
         super.loadView()
         DaysInMonth[1] = year % 4 == 0 ? 29 :28
+        calendar.backgroundColor = UIColor.clear
     }
     
     override func viewDidLoad() {

@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 
 struct EventModel {
-    let eventName: String
-    let eventTime: String
-    let eventDescription: String
-    let eventFullDescription: String
-    let eventImages: [UIImage]?
+    var eventName: String?
+    var eventTime: String?
+    var eventDescription: String?
+    var eventFullDescription: String?
+    var eventImages: [UIImage]?
 }

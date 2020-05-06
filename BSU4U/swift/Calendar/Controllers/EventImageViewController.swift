@@ -11,6 +11,8 @@ import UIKit
 
 class EventImageViewController: UIViewController {
     
+    public var pageIndex: Int = 0
+    
     private lazy var image: UIImage = UIImage()
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -21,8 +23,10 @@ class EventImageViewController: UIViewController {
         return imageView
     }()
     
-    init(image: UIImage) {
+    init(image: UIImage, pageIndex: Int) {
         super.init(nibName: nil, bundle: nil)
+        
+        self.pageIndex = pageIndex
         self.image = image
     }
     

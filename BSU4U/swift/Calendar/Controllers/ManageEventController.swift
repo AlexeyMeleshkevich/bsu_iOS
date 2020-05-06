@@ -20,6 +20,7 @@ class ManageEventController: UIViewController {
     @IBOutlet var eventDescriptionLabel: UILabel!
     @IBOutlet var eventDescription: UITextView!
     @IBOutlet var photosCollection: UICollectionView!
+    @IBOutlet var timeButton: UIButton!
     var blurViewWindow: UIVisualEffectView!
     
     public enum ControllerState {
@@ -27,21 +28,21 @@ class ManageEventController: UIViewController {
         case add
     }
     
+    weak var delegate: EventsViewControllerDelegate?
+    
     var user: AccessType!
     
     lazy var state: ControllerState = .edit
     lazy var photos = [UIImage]()
+    lazy var chosenCell: IndexPath? = IndexPath()
     
-    var data: EventModel! {
-        didSet(newValue) {
-            self.bindData(data: newValue)
-        }
-    }
+    var data: EventModel!
     
-    init?(coder: NSCoder, state: ControllerState, data: EventModel?, user: AccessType) {
+    init?(coder: NSCoder, state: ControllerState, data: EventModel?, user: AccessType, indexPath: IndexPath?) {
         super.init(coder: coder)
         self.user = user
         self.state = state
+        self.chosenCell = indexPath
         
         switch state {
         case .add:
@@ -80,6 +81,8 @@ class ManageEventController: UIViewController {
         
         photosCollection.delegate = self
         photosCollection.dataSource = self
+        photosCollection.backgroundColor = UIColor.clear
+        self.newEventLabel.adjustsFontSizeToFitWidth = true
     }
     
     func setTopicField() {
@@ -110,17 +113,18 @@ class ManageEventController: UIViewController {
     }
     
     func bindData(data: EventModel) {
-        bindImages(imagesArray: data.eventImages!)
         self.newEventLabel.text = "Редактировать"
         self.addEventButton.setTitle("Сохранить", for: .normal)
+        self.timeButton.setTitle(data.eventTime, for: .normal)
         self.topicField.text = data.eventName
         self.eventDescription.text = data.eventFullDescription
         eventDescription.textColor = UIColor.black
+        guard let images = data.eventImages else { return }
+        self.photos = images
+        bindImages(imagesArray: images)
     }
     
     func bindImages(imagesArray: [UIImage]) {
-        guard let images = data.eventImages else { return }
-        self.photos = images
         photosCollection.reloadData()
     }
     
@@ -170,8 +174,68 @@ class ManageEventController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    func validateField(message: String) {
+        blurView()
+        let alert = UIAlertController(title: "Все поля должны быть заполнены.", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: dismissBlur(alert:)))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     @IBAction func addEvent(_ sender: Any) {
+        guard let fullDescription = eventDescription.text else { validateField(message: "Введите описание"); return }
+        guard let name = topicField.text else {validateField(message: "Введите тему"); return}
+        guard let time = timeButton.titleLabel?.text else { return }
         
+        switch state {
+        case .add:
+            guard let cell = chosenCell else { return }
+            data = EventModel(eventName: name, eventTime: time, eventDescription: nil, eventFullDescription: fullDescription, eventImages: photos)
+            guard let data = data else { return }
+            
+            self.dismiss(animated: true) { [weak self] in
+                self?.delegate?.update(with: data, indexPath: cell)
+            }
+        case .edit:
+            self.data.eventFullDescription = fullDescription
+            self.data.eventName = name
+            self.data.eventImages = photos
+            self.data.eventTime = time
+            
+            guard let data = data else { return }
+            guard let cell = chosenCell else { return }
+            
+            self.dismiss(animated: true) { [weak self] in
+                self?.delegate?.update(with: data, indexPath: cell)
+            }
+        }
+    }
+    
+    func timeAlert() {
+        if data != nil && data.eventTime != nil {
+            let timeAlert = UIAlertController(title: "Время события", message: data.eventTime, preferredStyle: .alert)
+            timeAlert.addTextField(configurationHandler: nil)
+            timeAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                guard let time = timeAlert.textFields![0].text else { return }
+                self.data.eventTime = time
+                self.timeButton.setTitle(time, for: .normal)
+            }))
+            self.present(timeAlert, animated: true, completion: nil)
+        } else {
+            let timeAlert = UIAlertController(title: "Время события", message: "Введите время", preferredStyle: .alert)
+            timeAlert.addTextField(configurationHandler: { (tf) in
+                tf.placeholder = "Введите время"
+            })
+            timeAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                guard let time = timeAlert.textFields![0].text else { return }
+                self.data = EventModel(eventName: nil, eventTime: time, eventDescription: nil, eventFullDescription: nil, eventImages: nil)
+                self.data.eventTime = time
+                self.timeButton.setTitle(time, for: .normal)
+            }))
+            self.present(timeAlert, animated: true, completion: nil)
+        }
+    }
+    @IBAction func pickTime(_ sender: Any) {
+        timeAlert()
     }
 }
 
@@ -191,16 +255,12 @@ extension ManageEventController: UIImagePickerControllerDelegate, UINavigationCo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.editedImage] as? UIImage else { return }
         
-        var row = photosCollection.numberOfItems(inSection: 0)
-        if row == 0 {
-            row = 0
-        } else {
-            row += 1
-        }
+        let row = photos.count
+        
         let indexPath = IndexPath(row: row, section: 0)
         
         dismiss(animated: true) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                 self?.photos.append(image)
                 self?.photosCollection.insertItems(at: [indexPath])
                 self?.photosCollection.reloadData()
@@ -229,14 +289,32 @@ extension ManageEventController: UICollectionViewDelegate, UICollectionViewDataS
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.managePhotosCellID, for: indexPath) as? ManagePhotoCollectionCell else { showError(); return UICollectionViewCell() }
         
         cell.managePhoto.image = photos[indexPath.row]
-//
-//        let deleteButton = UIButton(type: .close)
-//        deleteButton.tintColor = UIColor.white
-//        cell.managePhoto.addSubview(deleteButton)
-//        let frame = CGRect(x: 75, y: 30, width: 40, height: 40)
-//        deleteButton.frame = frame
-//        deleteButton.layer.cornerRadius = deleteButton.frame.height/2
+        
+        let deleteButton = UIButton()
+        deleteButton.setBackgroundImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        deleteButton.tintColor = UIColor.white
+        cell.managePhoto.addSubview(deleteButton)
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            deleteButton.rightAnchor.constraint(equalTo: cell.managePhoto.rightAnchor, constant: -5),
+            deleteButton.topAnchor.constraint(equalTo: cell.managePhoto.topAnchor, constant: 5),
+            deleteButton.heightAnchor.constraint(equalToConstant: 30),
+            deleteButton.widthAnchor.constraint(equalToConstant: 30)
+        ])
+        deleteButton.layer.cornerRadius = deleteButton.frame.height/2
+        deleteButton.tag = indexPath.row
+        deleteButton.addTarget(self, action: #selector(deletePhoto(sender:)), for: .touchUpInside)
         
         return cell
+    }
+    
+    @objc func deletePhoto(sender: UIButton) {
+        let indexPath = IndexPath(row: sender.tag, section: 0)
+        photosCollection.deleteItems(at: [indexPath])
+        photos.remove(at: sender.tag)
+        if state == ControllerState.edit {
+            data.eventImages?.remove(at: sender.tag)
+        }
+        photosCollection.reloadData()
     }
 }

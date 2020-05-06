@@ -12,27 +12,23 @@ import SVProgressHUD
 
 class EventsPageViewController: UIPageViewController {
     
-    private lazy var imagesViewControllers = [EventImageViewController]()
+    private lazy var total: Int = 0
     private lazy var rootIndex: Int = Int()
-    private var currentIndex: Int = Int() {
-        didSet(newValue) {
-            parent?.title = "\(newValue)/\(imagesViewControllers.count)"
-        }
-    }
+    
+    var images = [UIImage]()
     
     init(images: [UIImage], chosenImageIndex: Int) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         
         self.rootIndex = chosenImageIndex
-        self.currentIndex = rootIndex
+        self.total = images.count - 1
+        self.images = images
         
-        for i in 0..<images.count {
-            let vc = EventImageViewController(image: images[i])
-            imagesViewControllers.append(vc)
-        }
         self.view.backgroundColor = UIColor.black
+        let rootViewController = EventImageViewController(image: images[rootIndex], pageIndex: rootIndex)
+        setViewControllers([rootViewController], direction: .forward, animated: true, completion: nil)
+        
         subscribeProtocols()
-        setViewControllers([imagesViewControllers[rootIndex]], direction: .forward, animated: true, completion: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -56,33 +52,40 @@ class EventsPageViewController: UIPageViewController {
 extension EventsPageViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard viewController is EventImageViewController else { showError(); return nil }
         
-        if currentIndex > 0 {
-            let indexVC = imagesViewControllers[currentIndex - 1]
-            return indexVC
+        var index = (viewController as! EventImageViewController).pageIndex
+        
+        if (index == 0) || (index == NSNotFound) {
+          return nil
         }
-        return nil
+        
+        index -= 1
+        
+        return viewControllerAtIndex(index: index)
+        
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard viewController is EventImageViewController else { showError(); return nil }
+        var index = (viewController as! EventImageViewController).pageIndex
         
-        if currentIndex < imagesViewControllers.count - 1 {
-            let indexVC = imagesViewControllers[currentIndex + 1]
-            return indexVC
+        if index == NSNotFound || index == self.total {
+          return nil
         }
         
-        return nil
+        index += 1
+        
+        return viewControllerAtIndex(index: index)
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard completed == true else { return }
-        if previousViewControllers.last == imagesViewControllers[currentIndex - 1] {
-            currentIndex -= 1
-        } else {
-            currentIndex += 1
-        }
-        
+    func viewControllerAtIndex(index: Int) -> EventImageViewController?
+    {
+      if self.total == 0 || index > self.total
+      {
+        return nil
+      }
+      
+      let vc = EventImageViewController(image: images[index], pageIndex: index)
+      
+      return vc
     }
 }

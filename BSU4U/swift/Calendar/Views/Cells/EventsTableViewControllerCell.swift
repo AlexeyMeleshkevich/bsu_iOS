@@ -28,7 +28,16 @@ class EventsTableViewControllerCell: UITableViewCell {
     }
     
     func setBottomAnchor() {
-        bottomAnchor.constraint(equalTo: eventDescription.bottomAnchor, constant: 5).isActive = true
+        eventDescription.removeConstraints(eventDescription.constraints)
+        NSLayoutConstraint.activate([
+            eventDescription.topAnchor.constraint(equalTo: topAnchor, constant: 50),
+            eventDescription.widthAnchor.constraint(equalToConstant: 208.33),
+            eventDescription.centerXAnchor.constraint(equalTo: centerXAnchor),
+            eventDescription.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10)
+        ])
+        contentView.heightAnchor.constraint(equalToConstant: 50+eventDescription.frame.height).isActive = true
+        eventDescription.updateConstraintsIfNeeded()
+        
     }
     
     func subscribeProtocols(_ protocols: UICollectionViewDataSource & UICollectionViewDelegate, forRow row: Int) {

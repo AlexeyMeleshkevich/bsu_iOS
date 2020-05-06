@@ -9,7 +9,11 @@
 import UIKit
 import SVProgressHUD
 
-class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+protocol EventsViewControllerDelegate: class {
+    func update(with data: EventModel, indexPath: IndexPath)
+}
+
+class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, EventsViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     var headerLabel = UILabel()
@@ -34,7 +38,6 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         title = "Расписание событий"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(presentManageViewController))
-        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -57,10 +60,12 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(identifier: "ManageEventController", creator: {
                 coder1 in
-                return ManageEventController(coder: coder1, state: .edit, data: event, user: self.user)
+                return ManageEventController(coder: coder1, state: .edit, data: event, user: self.user,indexPath: indexPath)
             })
             
-            self.present(vc, animated: true, completion: nil)
+            self.present(vc, animated: true, completion: {
+                vc.delegate = self
+            })
         case .user:
             tableView.deselectRow(at: indexPath, animated: true)
         case .none:
@@ -95,13 +100,20 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.eventTime.text = events[indexPath.row].eventTime
         cell.eventDescription.text = events[indexPath.row].eventFullDescription
         cell.eventName.text = events[indexPath.row].eventName
+        if events[indexPath.row].eventImages?.count == nil || events[indexPath.row].eventImages?.count == 0 {
+            cell.setBottomAnchor()
+            cell.heightAnchor.constraint(equalToConstant: 50+cell.eventDescription.frame.height).isActive = true
+        }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        let animation = makeSlideIn(duration: 0.5, delayFactor: 0.1)
+        let animator = Animator(animation: animation)
+        animator.animate(cell: cell, at: indexPath, in: tableView)
     }
-    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard user == AccessType.admin else { return }
         
@@ -129,11 +141,17 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         SVProgressHUD.showError(withStatus: "Ошибка")
     }
     
-    func presentManageViewControllerEdit(data: EventModel) {
+    func update(with data: EventModel, indexPath: IndexPath) {
+        events[indexPath.row] = data
+        tableView.reloadRows(at: [indexPath], with: .fade)
+        tableView.reloadData()
+    }
+    
+    func presentManageViewControllerEdit(data: EventModel, at path: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(identifier: "ManageEventController", creator: {
             coder in
-            return ManageEventController(coder: coder, state: .edit, data: data, user: self.user)
+            return ManageEventController(coder: coder, state: .edit, data: data, user: self.user, indexPath: path)
         })
         
         self.present(vc, animated: true, completion: nil)
@@ -143,10 +161,24 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(identifier: "ManageEventController", creator: {
             coder in
-            return ManageEventController(coder: coder, state: .add, data: nil, user: self.user)
+            return ManageEventController(coder: coder, state: .add, data: nil, user: self.user, indexPath: IndexPath(row: self.tableView.numberOfRows(inSection: 0) - 1, section: 0))
         })
         
         self.present(vc, animated: true, completion: nil)
+    }
+    
+    func makeSlideIn(duration: TimeInterval, delayFactor: Double) -> Animation {
+        return { cell, indexPath, tableView in
+            cell.transform = CGAffineTransform(translationX: tableView.bounds.width, y: 0)
+            
+            UIView.animate(
+                withDuration: duration,
+                delay: delayFactor * Double(indexPath.row),
+                options: [.curveEaseInOut],
+                animations: {
+                    cell.transform = CGAffineTransform(translationX: 0, y: 0)
+            })
+        }
     }
 }
 
@@ -173,6 +205,7 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let images = events[collectionView.tag].eventImages else { showError(); return}
+        print(indexPath.row)
         
         presentPhotos(with: images, indexPath: indexPath)
     }
@@ -196,8 +229,13 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
         self.navigationItem.rightBarButtonItem = nil
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(presentManageViewController))
         self.navigationItem.hidesBackButton = false
+        UIView.animate(withDuration: 0.3) {
+                self.children[0].view.alpha = 0
+        }
         
-        self.removeChild()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.removeChild()
+        }
     }
     
     func presentPhotos(with images: [UIImage], indexPath: IndexPath) {
@@ -210,7 +248,7 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
         setUIStateForPhoto()
         
         self.addChild(imagesVC)
-        self.title = "\(indexPath.row + 1)/\(images.count)"
+        self.title = "Фотографии события"
         
         let slideGestureTop = UISwipeGestureRecognizer(target: self, action: #selector(dismissPhoto))
         slideGestureTop.direction = .down
@@ -231,10 +269,6 @@ extension EventsViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func validateImages(_ collectionTag: Int, for indexPath: IndexPath) -> UIImage? {
         guard let images = events[collectionTag].eventImages?[indexPath.row] else { return nil}
         return images
-    }
-    
-    func checkText() {
-        let checker = UITextChecker()
     }
 }
 
