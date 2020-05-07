@@ -9,8 +9,13 @@
 import UIKit
 import SVProgressHUD
 
+enum ControllerState {
+    case edit
+    case add
+}
+
 protocol EventsViewControllerDelegate: class {
-    func update(with data: EventModel, indexPath: IndexPath)
+    func update(with data: EventModel, indexPath: IndexPath, state: ControllerState)
 }
 
 class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, EventsViewControllerDelegate {
@@ -126,7 +131,7 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func setHeaderLabel() {
-        let header = UIView(frame: CGRect(x: 0, y: 0, width: Int(self.tableView.frame.width), height: 36))
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: Int(self.view.frame.width), height: 36))
         headerLabel = UILabel(frame: header.bounds)
         headerLabel.text = "Hello"
         header.backgroundColor = UIColor.clear
@@ -141,10 +146,18 @@ class EventsViewController: UIViewController, UITableViewDelegate, UITableViewDa
         SVProgressHUD.showError(withStatus: "Ошибка")
     }
     
-    func update(with data: EventModel, indexPath: IndexPath) {
-        events[indexPath.row] = data
-        tableView.reloadRows(at: [indexPath], with: .fade)
-        tableView.reloadData()
+    func update(with data: EventModel, indexPath: IndexPath, state: ControllerState) {
+        switch state {
+        case .add:
+            events.append(data)
+            let ip = IndexPath(row: self.events.count + 1, section: 0)
+            tableView.insertRows(at: [ip], with: .automatic)
+//            tableView.reloadData()
+        case .edit:
+            events[indexPath.row] = data
+            tableView.reloadRows(at: [indexPath], with: .fade)
+            tableView.reloadData()
+        }
     }
     
     func presentManageViewControllerEdit(data: EventModel, at path: IndexPath) {

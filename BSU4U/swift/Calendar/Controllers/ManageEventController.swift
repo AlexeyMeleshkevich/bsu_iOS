@@ -23,10 +23,10 @@ class ManageEventController: UIViewController {
     @IBOutlet var timeButton: UIButton!
     var blurViewWindow: UIVisualEffectView!
     
-    public enum ControllerState {
-        case edit
-        case add
-    }
+//    public enum ControllerState {
+//        case edit
+//        case add
+//    }
     
     weak var delegate: EventsViewControllerDelegate?
     
@@ -81,8 +81,12 @@ class ManageEventController: UIViewController {
         
         photosCollection.delegate = self
         photosCollection.dataSource = self
+        photosCollection.reloadData()
         photosCollection.backgroundColor = UIColor.clear
         self.newEventLabel.adjustsFontSizeToFitWidth = true
+        timeButton.layer.cornerRadius = 6
+        timeButton.layer.borderWidth = 1
+        timeButton.layer.borderColor = UIColor.lightGray.cgColor
     }
     
     func setTopicField() {
@@ -181,10 +185,47 @@ class ManageEventController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    func checkFields() -> Bool {
+        if eventDescription.text.isEmpty {
+            validateField(message: "Введите описание")
+            return false
+        }
+        if topicField.text!.isEmpty || eventDescription.text == "Введите описание" {
+            validateField(message: "Введите тему")
+            return false
+        }
+        
+        if timeButton.titleLabel!.text!.isEmpty || checkTimeButton() == false {
+            validateField(message: "Введите время")
+            return false
+        }
+        
+        return true
+    }
+    
+    func checkTimeButton() -> Bool {
+        if timeButton.titleLabel!.text!.isEmpty {
+            return false
+        }
+        
+        guard let data = data else { return false }
+        
+        guard let taim = data.eventTime else { return false }
+        
+        if taim.isEmpty {
+            return false
+        }
+        return true
+    }
+    
     @IBAction func addEvent(_ sender: Any) {
         guard let fullDescription = eventDescription.text else { validateField(message: "Введите описание"); return }
         guard let name = topicField.text else {validateField(message: "Введите тему"); return}
         guard let time = timeButton.titleLabel?.text else { return }
+        
+        if checkFields() == false {
+            return
+        }
         
         switch state {
         case .add:
@@ -193,7 +234,7 @@ class ManageEventController: UIViewController {
             guard let data = data else { return }
             
             self.dismiss(animated: true) { [weak self] in
-                self?.delegate?.update(with: data, indexPath: cell)
+                self?.delegate?.update(with: data, indexPath: cell, state: self!.state)
             }
         case .edit:
             self.data.eventFullDescription = fullDescription
@@ -205,7 +246,7 @@ class ManageEventController: UIViewController {
             guard let cell = chosenCell else { return }
             
             self.dismiss(animated: true) { [weak self] in
-                self?.delegate?.update(with: data, indexPath: cell)
+                self?.delegate?.update(with: data, indexPath: cell, state: self!.state)
             }
         }
     }
@@ -213,9 +254,14 @@ class ManageEventController: UIViewController {
     func timeAlert() {
         if data != nil && data.eventTime != nil {
             let timeAlert = UIAlertController(title: "Время события", message: data.eventTime, preferredStyle: .alert)
-            timeAlert.addTextField(configurationHandler: nil)
+            timeAlert.addTextField(configurationHandler: { (tf) in
+                tf.placeholder = "Введите время"
+            })
             timeAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                 guard let time = timeAlert.textFields![0].text else { return }
+                if time.isEmpty && time.count <= 5 && !time.contains(":") {
+                    return
+                }
                 self.data.eventTime = time
                 self.timeButton.setTitle(time, for: .normal)
             }))
@@ -227,6 +273,9 @@ class ManageEventController: UIViewController {
             })
             timeAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                 guard let time = timeAlert.textFields![0].text else { return }
+                if time.isEmpty && time.count <= 5 && !time.contains(":") {
+                    return
+                }
                 self.data = EventModel(eventName: nil, eventTime: time, eventDescription: nil, eventFullDescription: nil, eventImages: nil)
                 self.data.eventTime = time
                 self.timeButton.setTitle(time, for: .normal)

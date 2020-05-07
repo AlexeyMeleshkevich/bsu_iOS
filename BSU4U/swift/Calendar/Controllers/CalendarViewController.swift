@@ -131,7 +131,7 @@ class CalendarViewController: UIViewController {
     }
     
     func setHeaderLabel() {
-        let header = UIView(frame: CGRect(x: 0, y: 0, width: Int(self.eventsView.frame.width), height: 36))
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: Int(self.view.frame.width), height: 36))
         headerLabel = UILabel(frame: header.bounds)
         header.backgroundColor = UIColor.clear
         headerLabel.textAlignment = .center
